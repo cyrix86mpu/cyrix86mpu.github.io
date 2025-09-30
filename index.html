@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>cyrix86mpu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       background: #0a0a0a;
       overflow: hidden;
@@ -23,14 +27,18 @@
 
     canvas#stars {
       position: fixed;
-      top:0; left:0;
-      width:100%; height:100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: -1;
     }
 
     #container {
       transition: transform 0.6s ease;
       padding: 1rem;
+      width: 90vw;
+      max-width: 700px;
     }
 
     /* Titolo/logo */
@@ -43,13 +51,13 @@
     }
 
     @keyframes glitch {
-      0% { transform: translate(0,0);}
-      2% { transform: translate(-2px,1px);}
-      4% { transform: translate(2px,-1px);}
-      6% { transform: translate(-1px,2px);}
-      8% { transform: translate(1px,0);}
-      10% { transform: translate(0,0);}
-      100% { transform: translate(0,0);}
+      0% { transform: translate(0, 0); }
+      2% { transform: translate(-2px, 1px); }
+      4% { transform: translate(2px, -1px); }
+      6% { transform: translate(-1px, 2px); }
+      8% { transform: translate(1px, 0); }
+      10% { transform: translate(0, 0); }
+      100% { transform: translate(0, 0); }
     }
 
     nav a {
@@ -59,18 +67,18 @@
       margin: 0 1rem;
       transition: color 0.3s, text-shadow 0.3s;
       display: inline-block;
+      cursor: pointer;
     }
     nav a:hover {
       color: white;
       text-shadow: 0 0 8px cyan;
     }
 
-
     #content {
       margin-top: 2rem;
-      max-width: 700px;
-      margin-left:auto;
-      margin-right:auto;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
       line-height: 1.5em;
       font-size: 1.4rem;
       font-family: "VT323", monospace;
@@ -84,10 +92,32 @@
       opacity: 1;
     }
 
+    /* Gallery styles */
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 10px;
+      padding: 10px;
+    }
+    #gallery img {
+      width: 100%;
+      border-radius: 6px;
+      box-shadow: 0 0 10px cyan;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px cyan;
+    }
+
     @media (max-width: 600px) {
       #title { font-size: 1.3rem; }
-      nav a { display:block; margin:0.5rem 0; }
-      #content { font-size: 1rem; line-height: 1.4em; }
+      nav a { display: block; margin: 0.5rem 0; }
+      #content { font-size: 1rem; line-height: 1.4em; padding: 0 0.5rem; }
+      #gallery {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      }
     }
   </style>
 </head>
@@ -101,18 +131,15 @@
       <a href="#" data-page="download">download</a>
       <a href="#" data-page="about">about</a>
       <a href="#" data-page="contact">contact</a>
+      <a href="#" data-page="gallery">gallery</a>
     </nav>
     <div id="content" class="visible">
-    <iframe title="cyrix86mpu live a Zona Warpa (Milano, 2024)"
-      src="https://video.zonawarpa.it/videos/embed/ebab0141-6823-4a4c-bfbf-2c080bb38ce9"
-      frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      style="width:100%; height:300px; border:none;">
-    </iframe>
+      <iframe title="cyrix86mpu live a Zona Warpa (Milano, 2024)" src="https://video.zonawarpa.it/videos/embed/ebab0141-6823-4a4c-bfbf-2c080bb38ce9" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms" style="width:100%; height:300px; border:none;"></iframe>
     </div>
   </div>
 
   <script>
-    // Stelle
+    // Stelle (stars) animation code unchanged
     const canvas = document.getElementById('stars');
     const ctx = canvas.getContext('2d');
     let w, h;
@@ -147,44 +174,63 @@
     }
     animate();
 
-    // Contenuti
-    const content = document.getElementById('content');
-    const container = document.getElementById('container');
-
+    // Pages content for text and iframe
     const pages = {
-      work:`Qui puoi scoprire i nostri lavori musicali, dalle prime tracce agli esperimenti più recenti. Cerchiamo di essere più variegati possibili e ognuno porta le proprie skill e la propria conoscenza, che mette a disposizione di tutti nelle varie performance.<br><br>
+      work: `Qui puoi scoprire i nostri lavori musicali, dalle prime tracce agli esperimenti più recenti. Cerchiamo di essere più variegati possibili e ognuno porta le proprie skill e la propria conoscenza, che mette a disposizione di tutti nelle varie performance.<br><br>
       Ecco una lista di posti dove abbiamo suonato:
-<ul>
-  <li>Zona Warpa 2025 Torino e Roma (dag + tucs)</li>
-  <li>Tamala Fest 2025 (dag + tucs + noise)
-  <li>
-Zona Warpa 2024 Milano (dag + tucs)
-    <iframe title="cyrix86mpu live a Zona Warpa (Milano, 2024)"
-      src="https://video.zonawarpa.it/videos/embed/ebab0141-6823-4a4c-bfbf-2c080bb38ce9"
-      frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-      style="width:100%; height:300px; border:none;">
-    </iframe>
-  </li>
-</ul>
-<br><br>
-`,
+      <ul>
+        <li>Zona Warpa 2025 Torino e Roma (dag + tucs)</li>
+        <li>Tamala Fest 2025 (dag + tucs + noise)</li>
+        <li>Zona Warpa 2024 Milano (dag + tucs)
+          <iframe title="cyrix86mpu live a Zona Warpa (Milano, 2024)"
+            src="https://video.zonawarpa.it/videos/embed/ebab0141-6823-4a4c-bfbf-2c080bb38ce9"
+            frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            style="width:100%; height:300px; border:none;">
+          </iframe>
+        </li>
+      </ul>
+      <br><br>`,
       about: "cyrix86mpu è un collettivo sonoro. Non siamo una band, ma un cluster: Cyrix e' di tutti e di nessuno, in perfetta filosofia peer-to-peer. Suoniamo computer obsoleti, sintetizzatori, drum machine e Gameboy. Attualmente il collettivo e' composto da Damiano aka 'dag', Davide aka 'noise', Emanuele aka 'tucs'",
       contact: "Vuoi contattarci? Scrivi a: tucs[at]linux.it o a dag7[at]pm.me - oppure cerca i nostri alias sui social. Ci trovi anche ai festival underground: portiamo il nostro setup ovunque ci sia corrente.<br><br>",
       download: `<h4>Scarica i nostri EP</h4>
       Rilasciamo poco per offrirvi qualcosa di bello<br>
-<a href="https://archive.org/details/cytrix86_zonawarpa2024">EP Zona Warpa 2024</a>
-`,
+      <a href="https://archive.org/details/cytrix86_zonawarpa2024">EP Zona Warpa 2024</a>`,
     };
 
-document.querySelectorAll('nav a').forEach(a=>{
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    const page = a.getAttribute('data-page');
-    container.style.transform = "translateY(-10px)";
-    content.innerHTML = pages[page];
-    content.classList.add("visible");
-  });
-});
-    </script>
+    function createGallery() {
+      const imageFilenames = [
+        '2025/esc/1.jpg',
+        '2025/tamala/1.jpg',
+        '2025/tamala/2.jpg',
+        '2025/tamala/3.jpg',
+      ]; 
+
+      let galleryHTML = '<div id="gallery">';
+      imageFilenames.forEach(filename => {
+        galleryHTML += `<img src="img/${filename}" alt="Gallery image" loading="lazy" />`;
+      });
+      galleryHTML += '</div>';
+      return galleryHTML;
+    }
+
+    const content = document.getElementById('content');
+    const container = document.getElementById('container');
+
+    document.querySelectorAll('nav a').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const page = a.getAttribute('data-page');
+        container.style.transform = "translateY(-10px)";
+
+        if (page === 'gallery') {
+          content.innerHTML = createGallery();
+          content.classList.add("visible");
+        } else {
+          content.innerHTML = pages[page] || '';
+          content.classList.add("visible");
+        }
+      });
+    });
+  </script>
 </body>
 </html>
